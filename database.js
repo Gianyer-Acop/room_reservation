@@ -63,7 +63,7 @@ function initDb() {
         db.get("SELECT count(*) as count FROM users", (err, row) => {
             if (row.count === 0) {
                 const userStmt = db.prepare("INSERT INTO users (username, password, role, sector) VALUES (?, ?, ?, ?)");
-                userStmt.run("admin", "admin123", "admin", "TI / Soporte");
+                userStmt.run("admin", "sinetram123", "admin", "Recursos Humanos");
                 userStmt.finalize();
                 console.log("Usuario Admin creado correctamente: admin / admin123");
             }

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reserva de Salas | Oficina</title>
+    <title>Reserva de Salas | Escritório</title>
     <!-- Google Fonts: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,43 +19,43 @@
         <div class="blob blob-3"></div>
     </div>
 
-    <!-- PANTALLA DE LOGIN -->
+    <!-- TELA DE LOGIN -->
     <section id="login-screen" class="glass-container" style="max-width: 400px; text-align: center;">
-        <h1 style="margin-bottom: 2rem;">Acceso</h1>
+        <h1 style="margin-bottom: 2rem;">Acesso</h1>
 
         <form id="login-form">
             <div class="form-group">
-                <input type="text" id="login-username" placeholder="Usuario" required>
+                <input type="text" id="login-username" placeholder="Usuário" required>
             </div>
             <div class="form-group">
-                <input type="password" id="login-password" placeholder="Contraseña" required>
+                <input type="password" id="login-password" placeholder="Senha" required>
             </div>
             <button type="submit" class="btn-primary">Entrar</button>
         </form>
 
         <div style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
-            Sistema privado. Contacta al administrador para obtener acceso.
+            Sistema privado. Contate o administrador para obter acesso.
         </div>
     </section>
 
-    <!-- APP PRINCIPAL (Oculta por defecto) -->
+    <!-- APP PRINCIPAL (Oculta por defeito) -->
     <main class="glass-container" id="main-app" style="display: none;">
         <header style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1>Reserva de Salas</h1>
-                <p id="current-date">Cargando fecha...</p>
+                <p id="current-date">Carregando data...</p>
             </div>
             <div style="text-align: right;">
                 <p id="user-display" style="font-weight: bold; color: var(--primary-accent); margin-bottom: 5px;"></p>
                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
                     <button id="btn-admin-users" onclick="openAdmin()"
                         style="display:none; background: rgba(245, 158, 11, 0.2); border: 1px solid var(--secondary-accent); color: var(--secondary-accent); padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">👥
-                        Usuarios</button>
+                        Usuários</button>
                     <button onclick="openProfile()"
-                        style="background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Mi
+                        style="background: rgba(255,255,255,0.1); border: 1px solid white; color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Meu
                         Perfil</button>
                     <button onclick="logout()"
-                        style="background: rgba(239, 68, 68, 0.4); border: 1px solid var(--error); color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Salir</button>
+                        style="background: rgba(239, 68, 68, 0.4); border: 1px solid var(--error); color: white; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Sair</button>
                 </div>
             </div>
         </header>
@@ -65,48 +65,47 @@
             style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1001; align-items: center; justify-content: center;">
             <div class="glass-container" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2>Panel de Administración</h2>
+                    <h2>Painel de Administração</h2>
                     <button onclick="closeAdmin()"
                         style="background: none; border: none; color: white; cursor: pointer; font-size: 1.5rem;">&times;</button>
                 </div>
 
                 <div class="admin-grid">
-                    <!-- COLUMNA USUARIOS -->
+                    <!-- COLUNA USUARIOS -->
                     <div class="admin-section">
-                        <h3>👥 Usuarios</h3>
+                        <h3>👥 Usuários</h3>
                         <div class="admin-form-card">
-                            <h4 style="margin-bottom: 1rem;">Registrar Usuario</h4>
+                            <h4 style="margin-bottom: 1rem;">Registrar Usuário</h4>
                             <input type="text" id="new-user-name" class="admin-form-input"
-                                placeholder="Nombre de Usuario">
-                            <input type="email" id="new-user-email" class="admin-form-input"
-                                placeholder="Correo Electrónico">
-                            <input type="password" id="new-user-pass" class="admin-form-input" placeholder="Contraseña">
+                                placeholder="Nome de Usuário">
+                            <input type="email" id="new-user-email" class="admin-form-input" placeholder="E-mail">
+                            <input type="password" id="new-user-pass" class="admin-form-input" placeholder="Senha">
                             <input type="text" id="new-user-sector" class="admin-form-input"
-                                placeholder="Sector / Departamento">
+                                placeholder="Setor / Departamento">
                             <button onclick="adminCreateUser()" class="btn-primary"
-                                style="width: 100%; margin-top: 0.5rem;">Crear Usuario</button>
+                                style="width: 100%; margin-top: 0.5rem;">Criar Usuário</button>
                         </div>
                         <div id="users-list" class="admin-list-container"></div>
                     </div>
 
-                    <!-- COLUMNA SALAS -->
+                    <!-- COLUNA SALAS -->
                     <div class="admin-section">
                         <h3>🏢 Salas</h3>
                         <div class="admin-form-card">
                             <h4 style="margin-bottom: 1rem; display: flex; justify-content: space-between;">
-                                <span id="room-form-title">Agregar Sala</span>
+                                <span id="room-form-title">Adicionar Sala</span>
                                 <button onclick="resetRoomForm()" id="btn-cancel-edit"
                                     style="display:none; font-size: 0.7rem; background:none; border: 1px solid white; color: white; padding: 2px 5px; border-radius: 4px; cursor: pointer;">Cancelar</button>
                             </h4>
                             <input type="hidden" id="edit-room-id">
                             <input type="text" id="new-room-name" class="admin-form-input"
-                                placeholder="Nombre (Ej: Sala A)">
+                                placeholder="Nome (Ex: Sala A)">
                             <input type="number" id="new-room-cap" class="admin-form-input"
-                                placeholder="Capacidad (Personas)">
+                                placeholder="Capacidade (Pessoas)">
                             <input type="text" id="new-room-feat" class="admin-form-input"
-                                placeholder="Características (Ej: TV, WiFi)">
+                                placeholder="Características (Ex: TV, WiFi)">
                             <button onclick="handleRoomSubmit()" id="btn-room-submit" class="btn-primary"
-                                style="width: 100%; margin-top: 0.5rem;">Agregar Sala</button>
+                                style="width: 100%; margin-top: 0.5rem;">Adicionar Sala</button>
                         </div>
                         <div id="rooms-list-admin" class="admin-list-container"></div>
                     </div>
@@ -121,22 +120,22 @@
                 <h2 style="margin-bottom: 1.5rem;">Editar Perfil</h2>
                 <form id="profile-form">
                     <div class="form-group">
-                        <label>Cambiar Usuario (Opcional)</label>
-                        <input type="text" id="prof-username" placeholder="Nuevo nombre de usuario">
+                        <label>Alterar Usuário (Opcional)</label>
+                        <input type="text" id="prof-username" placeholder="Novo nome de usuário">
                     </div>
                     <div class="form-group">
-                        <label>Cambiar Contraseña (Opcional)</label>
-                        <input type="password" id="prof-new-pass" placeholder="Nueva contraseña">
+                        <label>Alterar Senha (Opcional)</label>
+                        <input type="password" id="prof-new-pass" placeholder="Nova senha">
                     </div>
                     <hr style="border-color: rgba(255,255,255,0.1); margin: 1.5rem 0;">
                     <div class="form-group">
-                        <label style="color: var(--secondary-accent)">Contraseña Actual (Requerido)</label>
-                        <input type="password" id="prof-old-pass" placeholder="Confirma tu contraseña actual" required>
+                        <label style="color: var(--secondary-accent)">Senha Atual (Obrigatório)</label>
+                        <input type="password" id="prof-old-pass" placeholder="Confirme sua senha atual" required>
                     </div>
                     <div style="display: flex; gap: 1rem; margin-top: 1rem;">
                         <button type="button" onclick="closeProfile()"
                             style="flex: 1; padding: 0.75rem; background: transparent; border: 1px solid white; color: white; border-radius: 8px; cursor: pointer;">Cancelar</button>
-                        <button type="submit" class="btn-primary" style="flex: 1;">Guardar</button>
+                        <button type="submit" class="btn-primary" style="flex: 1;">Salvar</button>
                     </div>
                 </form>
             </div>
@@ -144,42 +143,42 @@
 
         <section class="dashboard">
             <div class="rooms-list" id="rooms-container">
-                <!-- Las salas se cargarán aquí dinámicamente -->
-                <div class="loading">Cargando salas disponibles...</div>
+                <!-- As salas serão carregadas aqui dinamicamente -->
+                <div class="loading">Carregando salas disponíveis...</div>
             </div>
 
             <div class="booking-panel">
-                <h2>Nueva Reserva</h2>
+                <h2>Nova Reserva</h2>
                 <form id="booking-form">
-                    <!-- El nombre y el sector ya no se piden, se toman del usuario logueado -->
+                    <!-- O nome e o setor não são mais solicitados, são pegos do usuário logado -->
                     <div class="form-group">
                         <label for="room-select">Sala</label>
                         <select id="room-select" required>
-                            <option value="" disabled selected>Selecciona una sala</option>
+                            <option value="" disabled selected>Selecione uma sala</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="meeting-title">Asunto</label>
-                        <input type="text" id="meeting-title" placeholder="Ej: Reunión de equipo" required>
+                        <label for="meeting-title">Assunto</label>
+                        <input type="text" id="meeting-title" placeholder="Ex: Reunião de equipe" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="booking-date">Fecha</label>
+                        <label for="booking-date">Data</label>
                         <input type="date" id="booking-date" required>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="start-time">Hora Inicio</label>
+                            <label for="start-time">Hora Início</label>
                             <select id="start-time" required>
-                                <!-- Se llena por JS -->
+                                <!-- Preenchido por JS -->
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="end-time">Hora Fin</label>
+                            <label for="end-time">Hora Fim</label>
                             <select id="end-time" required>
-                                <!-- Se llena por JS -->
+                                <!-- Preenchido por JS -->
                             </select>
                         </div>
                     </div>
@@ -190,7 +189,7 @@
         </section>
 
         <section class="schedule-view">
-            <h2>Agenda del Día</h2>
+            <h2>Agenda do Dia</h2>
             <div id="schedule-timeline" class="timeline">
                 <!-- Cronograma de reservas -->
             </div>

@@ -14,7 +14,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Servir archivos estáticos del Frontend
+// Servir arquivos estáticos do Frontend
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- API ENDPOINTS ---
@@ -24,7 +24,7 @@ app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     db.get("SELECT * FROM users WHERE username = ? AND password = ?", [username, password], (err, row) => {
         if (err || !row) {
-            res.status(401).json({ error: "Credenciales incorrectas" });
+            res.status(401).json({ error: "Credenciais incorretas" });
         } else {
             res.json({ user: row });
         }
@@ -35,17 +35,17 @@ app.post('/api/login', (req, res) => {
 app.post('/api/register', (req, res) => {
     const { username, email, password, sector } = req.body;
     if (!username || !email || !password || !sector) {
-        res.status(400).json({ error: "Faltan datos" });
+        res.status(400).json({ error: "Faltam dados" });
         return;
     }
     const sql = "INSERT INTO users (username, email, password, role, sector) VALUES (?, ?, ?, 'user', ?)";
     db.run(sql, [username, email, password, sector], function (err) {
         if (err) {
             console.error(err);
-            res.status(500).json({ error: "El usuario ya existe o hubo un error" });
+            res.status(500).json({ error: "O usuário já existe ou houve um erro" });
             return;
         }
-        res.json({ message: "Usuario creado", id: this.lastID });
+        res.json({ message: "Usuário criado", id: this.lastID });
     });
 });
 
@@ -53,10 +53,10 @@ app.post('/api/register', (req, res) => {
 app.put('/api/profile', (req, res) => {
     const { id, oldPassword, newUsername, newPassword } = req.body;
 
-    // Primero verificamos que el usuario existe y la contraseña vieja es correcta
+    // Primeiro verificamos que el usuario existe y la contraseña vieja es correcta
     db.get("SELECT * FROM users WHERE id = ? AND password = ?", [id, oldPassword], (err, user) => {
         if (err || !user) {
-            res.status(401).json({ error: "Contraseña anterior incorrecta" });
+            res.status(401).json({ error: "Senha anterior incorreta" });
             return;
         }
 
@@ -68,10 +68,10 @@ app.put('/api/profile', (req, res) => {
         const updateSql = "UPDATE users SET username = ?, password = ? WHERE id = ?";
         db.run(updateSql, [finalUsername, finalPassword, id], function (err) {
             if (err) {
-                res.status(500).json({ error: "Error al actualizar (quizas el usuario ya existe)" });
+                res.status(500).json({ error: "Erro ao atualizar (talvez o usuário já exista)" });
                 return;
             }
-            res.json({ message: "Perfil actualizado exitosamente" });
+            res.json({ message: "Perfil atualizado com sucesso" });
         });
     });
 });
@@ -84,7 +84,7 @@ app.post('/api/users/list', (req, res) => {
 
     db.get("SELECT role FROM users WHERE id = ?", [requesterId], (err, user) => {
         if (err || !user || user.role !== 'admin') {
-            res.status(403).json({ error: "Acceso denegado. Solo administradores." });
+            res.status(403).json({ error: "Acesso negado. Apenas administradores." });
             return;
         }
 
@@ -105,7 +105,7 @@ app.delete('/api/users/:id', (req, res) => {
 
     db.get("SELECT role FROM users WHERE id = ?", [requesterId], (err, admin) => {
         if (err || !admin || admin.role !== 'admin') {
-            res.status(403).json({ error: "Solo el admin puede eliminar usuarios." });
+            res.status(403).json({ error: "Apenas o admin pode excluir usuários." });
             return;
         }
 
@@ -119,7 +119,7 @@ app.delete('/api/users/:id', (req, res) => {
                     res.status(500).json({ error: err.message });
                     return;
                 }
-                res.json({ message: "Usuario y sus reservas eliminados." });
+                res.json({ message: "Usuário e suas reservas excluídos." });
             });
         });
     });
@@ -139,13 +139,32 @@ app.post('/api/rooms', (req, res) => {
 
     db.get("SELECT role FROM users WHERE id = ?", [requesterId], (err, user) => {
         if (err || !user || user.role !== 'admin') {
-            res.status(403).json({ error: "Solo admin puede crear salas" });
+            res.status(403).json({ error: "Apenas admin pode criar salas" });
             return;
         }
 
         db.run("INSERT INTO rooms (name, capacity, features) VALUES (?, ?, ?)", [name, capacity, features], function (err) {
             if (err) { res.status(500).json({ error: err.message }); return; }
-            res.json({ message: "Sala creada", id: this.lastID });
+            res.json({ message: "Sala criada", id: this.lastID });
+        });
+    });
+});
+
+// EDITAR SALA (SOLO ADMIN)
+app.put('/api/rooms/:id', (req, res) => {
+    const roomId = req.params.id;
+    const { name, capacity, features, requesterId } = req.body;
+
+    db.get("SELECT role FROM users WHERE id = ?", [requesterId], (err, user) => {
+        if (err || !user || user.role !== 'admin') {
+            res.status(403).json({ error: "Apenas admin pode editar salas" });
+            return;
+        }
+
+        const sql = "UPDATE rooms SET name = ?, capacity = ?, features = ? WHERE id = ?";
+        db.run(sql, [name, capacity, features, roomId], function (err) {
+            if (err) { res.status(500).json({ error: err.message }); return; }
+            res.json({ message: "Sala atualizada com sucesso" });
         });
     });
 });
@@ -157,7 +176,7 @@ app.delete('/api/rooms/:id', (req, res) => {
 
     db.get("SELECT role FROM users WHERE id = ?", [requesterId], (err, user) => {
         if (err || !user || user.role !== 'admin') {
-            res.status(403).json({ error: "Solo admin puede eliminar salas" });
+            res.status(403).json({ error: "Apenas admin pode excluir salas" });
             return;
         }
 
@@ -165,7 +184,7 @@ app.delete('/api/rooms/:id', (req, res) => {
         db.run("DELETE FROM bookings WHERE roomId = ?", roomId, (err) => {
             db.run("DELETE FROM rooms WHERE id = ?", roomId, function (err) {
                 if (err) { res.status(500).json({ error: err.message }); return; }
-                res.json({ message: "Sala eliminada" });
+                res.json({ message: "Sala excluída" });
             });
         });
     });
@@ -183,12 +202,12 @@ app.get('/api/bookings', (req, res) => {
 
 // Crear nueva reserva (Actualizado para sistema de usuarios)
 app.post('/api/bookings', (req, res) => {
-    console.log("Recibida peticion de reserva:", req.body); // DEBUG
+    console.log("Recebida petição de reserva:", req.body); // DEBUG
     const { roomId, userId, userName, userSector, title, startTime, endTime } = req.body;
 
     if (!roomId || !userId || !startTime || !endTime) {
-        console.error("Faltan datos:", { roomId, userId, startTime, endTime }); // DEBUG
-        res.status(400).json({ error: "Faltan datos obligatorios (Selecciona una sala y hora)" });
+        console.error("Faltam dados:", { roomId, userId, startTime, endTime }); // DEBUG
+        res.status(400).json({ error: "Faltam dados obrigatórios (Selecione uma sala e horário)" });
         return;
     }
 
@@ -205,17 +224,17 @@ app.post('/api/bookings', (req, res) => {
 
     db.get(conflictSql, [roomId, endTime, startTime, endTime, startTime, startTime, endTime], (err, row) => {
         if (err) { res.status(500).json({ error: err.message }); return; }
-        if (row) { res.status(409).json({ error: "La sala ya está reservada en ese horario" }); return; }
+        if (row) { res.status(409).json({ error: "A sala já está reservada neste horário" }); return; }
 
         // Insertar reserva vinculada al usuario
         const insertSql = `INSERT INTO bookings (roomId, userId, userName, userSector, title, startTime, endTime) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        db.run(insertSql, [roomId, userId, userName, userSector, title || 'Reunión', startTime, endTime], function (err) {
+        db.run(insertSql, [roomId, userId, userName, userSector, title || 'Reunião', startTime, endTime], function (err) {
             if (err) {
-                console.error("Error al insertar reserva:", err.message); // DEBUG
-                res.status(500).json({ error: "Error de Base de Datos: " + err.message });
+                console.error("Erro ao inserir reserva:", err.message); // DEBUG
+                res.status(500).json({ error: "Erro de Banco de Dados: " + err.message });
                 return;
             }
-            res.json({ message: "Reserva creada", id: this.lastID });
+            res.json({ message: "Reserva criada", id: this.lastID });
         });
     });
 });
@@ -227,20 +246,20 @@ app.delete('/api/bookings/:id', (req, res) => {
 
     // Primero verificamos de quien es la reserva
     db.get("SELECT * FROM bookings WHERE id = ?", [id], (err, booking) => {
-        if (!booking) { res.status(404).json({ error: "Reserva no encontrada" }); return; }
+        if (!booking) { res.status(404).json({ error: "Reserva não encontrada" }); return; }
 
         // Verificamos permisos del usuario que solicita
         db.get("SELECT * FROM users WHERE id = ?", [userId], (err, user) => {
-            if (!user) { res.status(401).json({ error: "Usuario no identificado" }); return; }
+            if (!user) { res.status(401).json({ error: "Usuário não identificado" }); return; }
 
             // Lógica: Es Admin O Es el dueño de la reserva
             if (user.role === 'admin' || user.id === booking.userId) {
                 db.run("DELETE FROM bookings WHERE id = ?", id, function (err) {
                     if (err) res.status(500).json({ error: err.message });
-                    else res.json({ message: "Reserva eliminada" });
+                    else res.json({ message: "Reserva excluída" });
                 });
             } else {
-                res.status(403).json({ error: "No tienes permiso para eliminar esta reserva" });
+                res.status(403).json({ error: "Você não tem permissão para excluir esta reserva" });
             }
         });
     });
@@ -248,6 +267,6 @@ app.delete('/api/bookings/:id', (req, res) => {
 
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Servidor de Reservas corriendo en http://localhost:${PORT}`);
-    console.log(`Para acceder desde la red, usa tu dirección IP local en lugar de localhost.`);
+    console.log(`Servidor de Reservas rodando em http://localhost:${PORT}`);
+    console.log(`Para acessar da rede, use seu endereço IP local.`);
 });

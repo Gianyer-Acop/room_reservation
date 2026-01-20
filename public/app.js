@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(data.error);
             }
         } catch (err) {
-            alert('Error al conectar con el servidor');
+            alert('Erro ao conectar com o servidor');
         }
     });
 
@@ -103,14 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if (res.ok) {
-                alert('Perfil actualizado. Por favor inicia sesión de nuevo.');
+                alert('Perfil atualizado. Por favor, faça login novamente.');
                 closeProfile();
                 logout();
             } else {
                 alert(data.error);
             }
         } catch (err) {
-            alert('Error al actualizar perfil');
+            alert('Erro ao atualizar perfil');
         }
     });
 
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function checkAdmin() {
         if (currentUser && currentUser.role === 'admin') {
             btnAdminUsers.style.display = 'block';
-            btnAdminUsers.textContent = '⚙️ Administración';
+            btnAdminUsers.textContent = '⚙️ Administração';
         } else {
             btnAdminUsers.style.display = 'none';
         }
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // -- ADMIN: USUARIOS --
     function loadAllUsers() {
-        usersListContainer.innerHTML = '<div class="loading">Cargando...</div>';
+        usersListContainer.innerHTML = '<div class="loading">Carregando...</div>';
         fetch('/api/users/list', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div style="font-size: 0.85rem; opacity: 0.6;">${user.sector} ${isAdmin ? '<span style="color:var(--primary-accent); font-weight:bold; font-size:0.8em">[ADMIN]</span>' : ''}</div>
                             </div>
                             ${!isAdmin ?
-                                `<button onclick="deleteUser('${user.id}', '${user.username}')" class="btn-icon btn-trash" title="Eliminar">
+                                `<button onclick="deleteUser('${user.id}', '${user.username}')" class="btn-icon btn-trash" title="Excluir">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                                 </button>`
                                 : ''}
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('new-user-pass').value;
         const sector = document.getElementById('new-user-sector').value;
 
-        if (!username || !password || !sector || !email) { alert("Completa todos los campos"); return; }
+        if (!username || !password || !sector || !email) { alert("Preencha todos os campos"); return; }
 
         fetch('/api/register', {
             method: 'POST',
@@ -184,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.error) alert(data.error);
                 else {
-                    alert('Usuario creado');
+                    alert('Usuário criado');
                     loadAllUsers();
                     document.getElementById('new-user-name').value = '';
                     document.getElementById('new-user-email').value = '';
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.deleteUser = function (userId, username) {
-        if (!confirm(`¿Eliminar usuario ${username}?`)) return;
+        if (!confirm(`Excluir usuário ${username}?`)) return;
         fetch(`/api/users/${userId}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let isEditingRoom = false;
 
     function loadAllRoomsAdmin() {
-        roomsListAdminContainer.innerHTML = '<div class="loading">Cargando...</div>';
+        roomsListAdminContainer.innerHTML = '<div class="loading">Carregando...</div>';
         fetch('/api/rooms').then(res => res.json()).then(data => {
             roomsListAdminContainer.innerHTML = '';
             data.data.forEach(room => {
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button onclick="startEditRoom(${roomData})" class="btn-icon btn-edit" title="Editar">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                             </button>
-                            <button onclick="deleteRoom('${room.id}', '${room.name}')" class="btn-icon btn-trash" title="Eliminar">
+                            <button onclick="deleteRoom('${room.id}', '${room.name}')" class="btn-icon btn-trash" title="Excluir">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                             </button>
                         </div>
@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('new-room-feat').value = room.features;
 
         document.getElementById('room-form-title').textContent = "Editar Sala";
-        document.getElementById('btn-room-submit').textContent = "Guardar Cambios";
+        document.getElementById('btn-room-submit').textContent = "Salvar Alterações";
         document.getElementById('btn-cancel-edit').style.display = 'inline-block';
     };
 
@@ -260,8 +260,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('new-room-cap').value = '';
         document.getElementById('new-room-feat').value = '';
 
-        document.getElementById('room-form-title').textContent = "Agregar Sala";
-        document.getElementById('btn-room-submit').textContent = "Agregar Sala";
+        document.getElementById('room-form-title').textContent = "Adicionar Sala";
+        document.getElementById('btn-room-submit').textContent = "Adicionar Sala";
         document.getElementById('btn-cancel-edit').style.display = 'none';
     };
 
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const capacity = document.getElementById('new-room-cap').value;
         const features = document.getElementById('new-room-feat').value;
 
-        if (!name || !capacity) { alert("Nombre y capacidad requeridos"); return; }
+        if (!name || !capacity) { alert("Nome e capacidade obrigatórios"); return; }
 
         fetch('/api/rooms', {
             method: 'POST',
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.error) alert(data.error);
                 else {
-                    alert('Sala creada');
+                    alert('Sala criada');
                     resetRoomForm();
                     loadAllRoomsAdmin();
                     loadRooms();
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.error) alert(data.error);
                 else {
-                    alert('Sala actualizada');
+                    alert('Sala atualizada');
                     resetRoomForm();
                     loadAllRoomsAdmin();
                     loadRooms();
@@ -323,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.deleteRoom = function (id, name) {
-        if (!confirm(`¿Eliminar sala ${name}?\nSe borrarán todas sus reservas.`)) return;
+        if (!confirm(`Excluir sala ${name}?\nTodas as reservas desta sala serão apagadas.`)) return;
         fetch(`/api/rooms/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -339,7 +339,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function initializeApp() {
         const now = new Date();
         if (!dateInput.value) dateInput.valueAsDate = now;
-        currentDateEl.textContent = now.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        currentDateEl.textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
         // Timer de refresco automatico cada 30s
         if (window.refreshInterval) clearInterval(window.refreshInterval);
@@ -385,11 +385,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 roomsContainer.innerHTML = '';
-                if (data.data.length === 0) roomsContainer.innerHTML = '<div>No hay salas disponibles.</div>';
+                if (data.data.length === 0) roomsContainer.innerHTML = '<div>Não há salas disponíveis.</div>';
 
                 // Guardar seleccion previa
                 const currentVal = roomSelect.value;
-                roomSelect.innerHTML = '<option value="" disabled selected>Selecciona una sala</option>';
+                roomSelect.innerHTML = '<option value="" disabled selected>Selecione uma sala</option>';
 
                 data.data.forEach(room => {
                     const card = document.createElement('div');
@@ -398,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.innerHTML = `
                         <h3>${room.name}</h3>
                         <div class="room-details">
-                            <span>👥 ${room.capacity} personas</span>
+                            <span>👥 ${room.capacity} pessoas</span>
                             <span>✨ ${room.features}</span>
                         </div>
                     `;
@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 scheduleTimeline.innerHTML = '';
                 if (data.data.length === 0) {
-                    scheduleTimeline.innerHTML = '<p style="text-align:center; color: #94a3b8;">No hay reservas hoy.</p>';
+                    scheduleTimeline.innerHTML = '<p style="text-align:center; color: #94a3b8;">Não há reservas hoje.</p>';
                     return;
                 }
 
@@ -439,10 +439,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="booking-info">
                             <div class="time">${start} - ${end}</div>
                             <div><strong>${booking.title}</strong></div>
-                            <div style="font-size: 0.85em; opacity: 0.8;">${booking.userName || 'Usuario'} (${booking.userSector || 'General'})</div>
+                            <div style="font-size: 0.85em; opacity: 0.8;">${booking.userName || 'Usuário'} (${booking.userSector || 'Geral'})</div>
                         </div>
                         ${canDelete ? `
-                        <button class="btn-delete" onclick="deleteBooking(${booking.id})" title="Eliminar">
+                        <button class="btn-delete" onclick="deleteBooking(${booking.id})" title="Excluir">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
                         </button>` : ''}
                     `;
@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.deleteBooking = function (id) {
         if (!currentUser) return;
-        if (!confirm('¿Eliminar reserva?')) return;
+        if (!confirm('Excluir reserva?')) return;
         fetch(`/api/bookings/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
@@ -462,9 +462,9 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.error) alert(data.error);
-                else { alert('Reserva eliminada'); loadBookings(); }
+                else { alert('Reserva excluída'); loadBookings(); }
             })
-            .catch(err => alert('Error al eliminar'));
+            .catch(err => alert('Erro ao excluir'));
     };
 
     bookingForm.addEventListener('submit', (e) => {
@@ -472,7 +472,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateVal = dateInput.value;
         const startVal = startTimeSelect.value;
         const endVal = endTimeSelect.value;
-        if (!dateVal || !startVal || !endVal) { alert('Completa la hora.'); return; }
+        if (!dateVal || !startVal || !endVal) { alert('Preencha o horário.'); return; }
 
         const formData = {
             roomId: roomSelect.value,
@@ -492,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(res => res.json())
             .then(data => {
                 if (data.error) throw new Error(data.error);
-                alert('¡Reserva creada!');
+                alert('Reserva criada!');
                 bookingForm.reset();
                 dateInput.valueAsDate = new Date();
                 loadBookings();
