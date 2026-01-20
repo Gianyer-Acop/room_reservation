@@ -1,0 +1,403 @@
+:root {
+    --primary-bg: #0f172a;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --primary-accent: #38bdf8;
+    --secondary-accent: #fbbf24;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --error: #ef4444;
+}
+
+body {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--primary-bg);
+    min-height: 100vh;
+    /* Ocupar toda la altura */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* Centrado absoluto */
+    font-size: 16px;
+    /* Ajuste ligero a 16px para que quepa mejor, manteniendo escalas */
+    overflow-x: hidden;
+}
+
+/* BACKGROUND ANIMATION */
+.background-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: move 20s infinite alternate;
+}
+
+.blob-1 {
+    top: -10%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: #4f46e5;
+}
+
+.blob-2 {
+    bottom: -10%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: #db2777;
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    top: 40%;
+    left: 40%;
+    width: 300px;
+    height: 300px;
+    background: #0ea5e9;
+    animation-delay: -10s;
+}
+
+@keyframes move {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(50px, -50px) scale(1.1);
+    }
+}
+
+/* LAYOUT */
+.glass-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    /* Reduce un poco padding para ganar espacio */
+    width: 95%;
+    /* Mas ancho en porcentaje */
+    max-width: 900px;
+    /* Ancho maximo contenido para que no se expanda tanto */
+    max-height: 95vh;
+    /* Intentar no exceder altura de pantalla */
+    overflow-y: auto;
+    /* Scroll interno si es necesario */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    margin: 1rem 0;
+}
+
+h1,
+h2,
+h3 {
+    margin: 0;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 2rem;
+    letter-spacing: -0.5px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+/* FORMS */
+.form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+}
+
+input,
+select {
+    width: 100%;
+    padding: 12px;
+    /* Input comodo pero no gigante */
+    font-size: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: all 0.2s;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    background: rgba(0, 0, 0, 0.3);
+}
+
+/* BUTTONS */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+.btn-delete {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.btn-delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--error);
+}
+
+/* DASHBOARD LAYOUT */
+.dashboard {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    /* Mantenemos 3rem como se pidio */
+    align-items: start;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+/* ROOMS */
+.rooms-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.room-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+    padding: 1.2rem;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.room-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.room-card.selected {
+    border-color: var(--primary-accent);
+    background: rgba(56, 189, 248, 0.1);
+}
+
+.room-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.room-details {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* TIMELINE */
+.schedule-view {
+    margin-top: 2rem;
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    max-height: 300px;
+    overflow-y: auto;
+    /* Scroll en timeline si se llena mucho */
+    padding-right: 5px;
+}
+
+.booking-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-accent);
+}
+
+.booking-info {
+    font-size: 1rem;
+}
+
+.booking-info .time {
+    font-weight: bold;
+    color: var(--primary-accent);
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+}
+
+/* ADMIN PANEL STYLES */
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media (max-width: 768px) {
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.admin-section h3 {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-accent);
+    font-size: 1.3rem;
+}
+
+.admin-form-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-form-input {
+    width: 100% !important;
+    padding: 12px;
+    margin-bottom: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: white;
+    font-family: inherit;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.admin-form-input:focus {
+    outline: none;
+    border-color: var(--primary-accent);
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.admin-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.admin-list-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+    font-size: 1rem;
+}
+
+.admin-list-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ESTILOS DE BOTONES ADMIN SVG */
+.btn-icon {
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 5px;
+}
+
+.btn-icon svg {
+    stroke-width: 2px;
+    width: 18px;
+    height: 18px;
+}
+
+.btn-edit {
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid var(--primary-accent);
+}
+
+.btn-edit:hover {
+    background: var(--primary-accent);
+}
+
+.btn-trash {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid var(--error);
+}
+
+.btn-trash:hover {
+    background: var(--error);
+}
