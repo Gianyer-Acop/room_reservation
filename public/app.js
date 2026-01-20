@@ -424,29 +424,54 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 scheduleTimeline.innerHTML = '';
                 if (data.data.length === 0) {
-                    scheduleTimeline.innerHTML = '<p style="text-align:center; color: #94a3b8;">Não há reservas hoje.</p>';
+                    scheduleTimeline.innerHTML = '<p style="text-align:center; color: #94a3b8;">Não há reservas.</p>';
                     return;
                 }
 
+                // Agrupar por data
+                const groups = {};
                 data.data.forEach(booking => {
-                    const start = new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const end = new Date(booking.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.id === booking.userId);
+                    const dateKey = booking.startTime.split('T')[0];
+                    if (!groups[dateKey]) groups[dateKey] = [];
+                    groups[dateKey].push(booking);
+                });
 
-                    const item = document.createElement('div');
-                    item.className = 'booking-item';
-                    item.innerHTML = `
-                        <div class="booking-info">
-                            <div class="time">${start} - ${end}</div>
-                            <div><strong>${booking.title}</strong></div>
-                            <div style="font-size: 0.85em; opacity: 0.8;">${booking.userName || 'Usuário'} (${booking.userSector || 'Geral'})</div>
-                        </div>
-                        ${canDelete ? `
-                        <button class="btn-delete" onclick="deleteBooking(${booking.id})" title="Excluir">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
-                        </button>` : ''}
-                    `;
-                    scheduleTimeline.appendChild(item);
+                // Ordenar datas
+                const sortedDates = Object.keys(groups).sort();
+
+                sortedDates.forEach(dateStr => {
+                    // Adicionar cabeçalho de data
+                    const dateObj = new Date(dateStr + 'T12:00:00'); // Evitar problemas de timezone
+                    const formattedDate = dateObj.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+                    const header = document.createElement('div');
+                    header.className = 'date-group-header';
+                    header.textContent = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+                    scheduleTimeline.appendChild(header);
+
+                    // Adicionar reservas do dia
+                    groups[dateStr].forEach(booking => {
+                        const start = new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const end = new Date(booking.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                        const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.id === booking.userId);
+
+                        const item = document.createElement('div');
+                        item.className = 'booking-item';
+                        item.innerHTML = `
+                            <div class="booking-info">
+                                <div class="time">${start} - ${end}</div>
+                                <div style="margin-bottom: 2px;"><strong>${booking.title}</strong></div>
+                                <div style="font-size: 0.85em; opacity: 0.8; color: var(--text-secondary);">
+                                    📍 ${booking.roomName || 'Sala'} | 👤 ${booking.userName || 'Usuário'} (${booking.userSector || 'Geral'})
+                                </div>
+                            </div>
+                            ${canDelete ? `
+                            <button class="btn-delete" onclick="deleteBooking(${booking.id})" title="Excluir">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                            </button>` : ''}
+                        `;
+                        scheduleTimeline.appendChild(item);
+                    });
                 });
             });
     }

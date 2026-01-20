@@ -1,12 +1,19 @@
 :root {
-    --primary-bg: #0f172a;
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --primary-accent: #38bdf8;
-    --secondary-accent: #fbbf24;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --error: #ef4444;
+    --primary-bg: #f5f8ff;
+    /* Fundo Light: Branco azulado suave */
+    --glass-bg: rgba(255, 255, 255, 0.55);
+    /* Vidro mais claro e opaco */
+    --glass-border: rgba(255, 255, 255, 0.7);
+    --primary-accent: #0284c7;
+    /* Azul profundo para contraste */
+    --secondary-accent: #f59e0b;
+    /* Laranja vibrante */
+    --text-primary: #0f172a;
+    /* Texto escuro para legibilidade */
+    --text-secondary: #475569;
+    --error: #e11d48;
+    --input-border: rgba(0, 0, 0, 0.15);
+    /* Borda escura para inputs */
 }
 
 body {
@@ -15,15 +22,13 @@ body {
     color: var(--text-primary);
     background-color: var(--primary-bg);
     min-height: 100vh;
-    /* Ocupar toda la altura */
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* Centrado absoluto */
     font-size: 16px;
-    /* Ajuste ligero a 16px para que quepa mejor, manteniendo escalas */
     overflow-x: hidden;
+    line-height: 1.5;
 }
 
 /* BACKGROUND ANIMATION */
@@ -40,34 +45,34 @@ body {
 .blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-    animation: move 20s infinite alternate;
+    filter: blur(100px);
+    opacity: 0.35;
+    animation: move 25s infinite alternate ease-in-out;
 }
 
 .blob-1 {
     top: -10%;
     left: -10%;
-    width: 500px;
-    height: 500px;
-    background: #4f46e5;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, #bae6fd 0%, transparent 70%);
 }
 
 .blob-2 {
     bottom: -10%;
     right: -10%;
-    width: 400px;
-    height: 400px;
-    background: #db2777;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, #fbcfe8 0%, transparent 70%);
     animation-delay: -5s;
 }
 
 .blob-3 {
-    top: 40%;
+    top: 30%;
     left: 40%;
-    width: 300px;
-    height: 300px;
-    background: #0ea5e9;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #e9d5ff 0%, transparent 70%);
     animation-delay: -10s;
 }
 
@@ -77,56 +82,59 @@ body {
     }
 
     to {
-        transform: translate(50px, -50px) scale(1.1);
+        transform: translate(100px, -100px) scale(1.2);
     }
 }
 
 /* LAYOUT */
 .glass-container {
     background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    padding: 2rem;
-    /* Reduce un poco padding para ganar espacio */
-    width: 95%;
-    /* Mas ancho en porcentaje */
-    max-width: 900px;
-    /* Ancho maximo contenido para que no se expanda tanto */
-    max-height: 95vh;
-    /* Intentar no exceder altura de pantalla */
-    overflow-y: auto;
-    /* Scroll interno si es necesario */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(35px);
+    -webkit-backdrop-filter: blur(35px);
+    border: 1px solid var(--input-border);
+    /* Padronizado */
+    border-radius: 24px;
+    padding: 1.5rem 2.5rem;
+    width: 98%;
+    max-width: 1350px;
+    max-height: 98vh;
+    overflow-y: hidden;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
     margin: 1rem 0;
+    transition: all 0.3s ease;
 }
 
 h1,
 h2,
 h3 {
     margin: 0;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 h1 {
-    font-size: 2rem;
-    letter-spacing: -0.5px;
+    font-size: 1.8rem;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 h2 {
-    font-size: 1.5rem;
-    margin-bottom: 0.8rem;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--primary-accent);
 }
 
 /* FORMS */
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     text-align: left;
 }
 
 .form-row {
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem;
 }
 
 .form-row .form-group {
@@ -144,11 +152,11 @@ input,
 select {
     width: 100%;
     padding: 12px;
-    /* Input comodo pero no gigante */
     font-size: 1rem;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--glass-border);
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.6);
+    /* Clareado para o light */
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
     color: var(--text-primary);
     font-family: inherit;
     box-sizing: border-box;
@@ -159,17 +167,19 @@ input:focus,
 select:focus {
     outline: none;
     border-color: var(--primary-accent);
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.9);
+    /* Quase sólido no foco */
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
 }
 
 /* BUTTONS */
 .btn-primary {
     width: 100%;
-    padding: 12px;
-    font-size: 1.1rem;
+    padding: 10px;
+    font-size: 1rem;
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     border: none;
-    border-radius: 10px;
+    border-radius: 8px;
     color: white;
     font-weight: 600;
     cursor: pointer;
@@ -199,55 +209,82 @@ select:focus {
 /* DASHBOARD LAYOUT */
 .dashboard {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    /* Mantenemos 3rem como se pidio */
-    align-items: start;
-    margin-top: 2rem;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-top: 1rem;
+}
+
+.booking-side,
+.agenda-side {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-right: 10px;
+    height: 100%;
+    justify-content: center;
 }
 
 @media (max-width: 768px) {
+    .glass-container {
+        padding: 1.5rem;
+        height: auto;
+        max-height: none;
+        overflow-y: visible;
+    }
+
     .dashboard {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
+        gap: 2rem;
+        height: auto;
+    }
+
+    .timeline {
+        height: 400px;
     }
 }
 
 /* ROOMS */
 .rooms-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
 }
 
 .room-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid transparent;
-    padding: 1.2rem;
+    flex: 1 1 180px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--input-border);
+    /* Padronizado */
+    padding: 0.8rem;
     border-radius: 14px;
     cursor: pointer;
     transition: all 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .room-card:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
 }
 
 .room-card.selected {
     border-color: var(--primary-accent);
-    background: rgba(56, 189, 248, 0.1);
+    background: rgba(2, 132, 199, 0.1);
+    /* Usando var primary accent corregida */
 }
 
 .room-card h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
 }
 
 .room-details {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    margin-top: 0.5rem;
+    margin-top: 0.3rem;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -255,28 +292,49 @@ select:focus {
 
 /* TIMELINE */
 .schedule-view {
-    margin-top: 2rem;
+    margin: 0;
+    ;
 }
 
 .timeline {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    margin-top: 1rem;
-    max-height: 300px;
+    margin-top: 1.5rem;
+    height: 65vh;
     overflow-y: auto;
-    /* Scroll en timeline si se llena mucho */
-    padding-right: 5px;
+    padding-right: 12px;
+}
+
+/* Scrollbar personalizada discreta */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.2);
 }
 
 .booking-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 1rem;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 0.8rem;
     border-radius: 10px;
-    border-left: 4px solid var(--primary-accent);
+    border: 1px solid var(--input-border);
+    /* Padronizado */
+    border-left: 5px solid var(--primary-accent);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .booking-info {
@@ -288,6 +346,23 @@ select:focus {
     color: var(--primary-accent);
     margin-bottom: 4px;
     font-size: 1.1rem;
+}
+
+/* DATE HEADERS IN TIMELINE */
+.date-group-header {
+    background: rgba(2, 132, 199, 0.1);
+    color: var(--primary-accent);
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 1.5rem 0 0.8rem 0;
+    display: inline-block;
+    border: 1px solid rgba(2, 132, 199, 0.1);
+}
+
+.date-group-header:first-child {
+    margin-top: 0;
 }
 
 /* ADMIN PANEL STYLES */
@@ -312,22 +387,23 @@ select:focus {
 }
 
 .admin-form-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--input-border);
+    /* Padronizado */
     border-radius: 12px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
 }
 
 .admin-form-input {
     width: 100% !important;
     padding: 12px;
     margin-bottom: 12px;
-    background: rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: white;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
+    color: var(--text-primary);
     font-family: inherit;
     box-sizing: border-box;
     font-size: 1rem;
@@ -336,7 +412,7 @@ select:focus {
 .admin-form-input:focus {
     outline: none;
     border-color: var(--primary-accent);
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.9);
 }
 
 .admin-list-container {
@@ -349,8 +425,8 @@ select:focus {
 }
 
 .admin-list-item {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(208, 208, 208, 0.6);
     padding: 1rem;
     border-radius: 8px;
     display: flex;
@@ -361,21 +437,22 @@ select:focus {
 }
 
 .admin-list-item:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.7);
 }
 
 /* ESTILOS DE BOTONES ADMIN SVG */
 .btn-icon {
     border: none;
     cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
-    transition: all 0.2s;
-    color: white;
+    padding: 6px;
+    border-radius: 8px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    color: var(--text-primary);
+    /* Texto/ícone escuro por padrão */
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 5px;
+    margin-left: 8px;
 }
 
 .btn-icon svg {
@@ -385,19 +462,135 @@ select:focus {
 }
 
 .btn-edit {
-    background: rgba(59, 130, 246, 0.2);
-    border: 1px solid var(--primary-accent);
+    background: rgba(2, 132, 199, 0.1);
+    border: 1px solid rgba(2, 132, 199, 0.3);
+    color: var(--primary-accent);
 }
 
 .btn-edit:hover {
     background: var(--primary-accent);
+    color: white;
+    transform: scale(1.1);
 }
 
 .btn-trash {
-    background: rgba(239, 68, 68, 0.2);
-    border: 1px solid var(--error);
+    background: rgba(225, 29, 72, 0.1);
+    border: 1px solid rgba(225, 29, 72, 0.3);
+    color: var(--error);
 }
 
 .btn-trash:hover {
     background: var(--error);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* CLOSING & CANCELING */
+.btn-close {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 2rem;
+    opacity: 0.6;
+    transition: all 0.2s;
+}
+
+.btn-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+.btn-cancel {
+    flex: 1;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* LOGO SIZES */
+.login-logo {
+    height: 250px;
+    filter: drop-shadow(0 0 30px rgba(56, 189, 248, 0.3));
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.login-logo:hover {
+    transform: scale(1.08) rotate(2deg);
+}
+
+.header-logo {
+    height: 200px;
+    transition: all 0.3s ease;
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+}
+
+/* HEADER ACTIONS & BUTTONS */
+.header-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 0;
+}
+
+.btn-action {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: var(--text-primary);
+}
+
+.btn-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.btn-action.admin {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: var(--secondary-accent);
+    color: var(--secondary-accent);
+    display: none;
+    /* Controlado via JS */
+}
+
+.btn-action.admin:hover {
+    background: var(--secondary-accent);
+    color: #000;
+}
+
+.btn-action.profile {
+    background: rgba(232, 232, 232, 0.6);
+    border-color: rgba(208, 208, 208, 0.6);
+}
+
+.btn-action.profile:hover {
+    background: rgba(208, 208, 208, 0.6);
+}
+
+.btn-action.logout {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: var(--error);
+    color: var(--error);
+}
+
+.btn-action.logout:hover {
+    background: var(--error);
+    color: white;
 }
