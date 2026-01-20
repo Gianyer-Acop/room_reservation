@@ -53,8 +53,7 @@ function initDb() {
 
                 // Salas
                 const stmt = db.prepare("INSERT INTO rooms (name, capacity, features) VALUES (?, ?, ?)");
-                stmt.run("Sala de Treinamento", 12, "Proyector, Video conferencia");
-                stmt.run("Sala de Reunião", 6, "Pizarra blanca");
+                stmt.run("Sala de Treinamento", 12);
                 stmt.finalize();
             }
         });
