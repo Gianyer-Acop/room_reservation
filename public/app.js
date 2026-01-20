@@ -491,10 +491,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div style="font-size: 0.85em; opacity: 0.8; color: var(--text-secondary);">
                         📍 ${b.roomName || 'Sala'} | 👤 ${b.userName || 'Usuário'}
                     </div>
-                    ${isPast && b.usageStatus === 'pending' ? `
+                    ${isPast ? `
                     <div class="usage-controls" style="margin-top: 8px; display: flex; gap: 5px;">
-                        <button class="btn-status btn-attended" onclick="updateBookingStatus(${b.id}, 'attended')" title="Marcar como Realizado">✓ Sim</button>
-                        <button class="btn-status btn-missed" onclick="updateBookingStatus(${b.id}, 'missed')" title="Marcar como Não Realizado">✗ Não</button>
+                        <button class="btn-status btn-attended ${b.usageStatus === 'attended' ? 'active' : ''}" onclick="updateBookingStatus(${b.id}, 'attended')" title="Marcar como Realizado">✓ Sim</button>
+                        <button class="btn-status btn-missed ${b.usageStatus === 'missed' ? 'active' : ''}" onclick="updateBookingStatus(${b.id}, 'missed')" title="Marcar como Não Realizado">✗ Não</button>
                     </div>` : ''}
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 5px;">
@@ -563,10 +563,10 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <div style="font-size: 0.85em; opacity: 0.8; color: var(--text-secondary);">
                                     📍 ${booking.roomName || 'Sala'} | 👤 ${booking.userName || 'Usuário'}
                                 </div>
-                                ${isPast && booking.usageStatus === 'pending' ? `
+                                ${isPast ? `
                                 <div class="usage-controls" style="margin-top: 8px; display: flex; gap: 5px;">
-                                    <button class="btn-status btn-attended" onclick="updateBookingStatus(${booking.id}, 'attended')" title="Marcar como Realizado">✓ Sim</button>
-                                    <button class="btn-status btn-missed" onclick="updateBookingStatus(${booking.id}, 'missed')" title="Marcar como Não Realizado">✗ Não</button>
+                                    <button class="btn-status btn-attended ${booking.usageStatus === 'attended' ? 'active' : ''}" onclick="updateBookingStatus(${booking.id}, 'attended')" title="Marcar como Realizado">✓ Sim</button>
+                                    <button class="btn-status btn-missed ${booking.usageStatus === 'missed' ? 'active' : ''}" onclick="updateBookingStatus(${booking.id}, 'missed')" title="Marcar como Não Realizado">✗ Não</button>
                                 </div>` : ''}
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 5px;">

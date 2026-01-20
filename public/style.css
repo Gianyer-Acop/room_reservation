@@ -444,20 +444,39 @@ select:focus {
 }
 
 .btn-attended {
-    background: #22c55e;
-    color: white;
-    border: none;
+    background: rgba(34, 197, 94, 0.1);
+    color: #15803d;
+    border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .btn-missed {
+    background: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-attended.active {
+    background: #22c55e;
+    color: white;
+    border: none;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.4);
+}
+
+.btn-missed.active {
     background: #ef4444;
     color: white;
     border: none;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+.btn-status:not(.active) {
+    opacity: 0.6;
 }
 
 .btn-status:hover {
     transform: scale(1.05);
     filter: brightness(1.1);
+    opacity: 1;
 }
 
 @keyframes slideUp {
