@@ -143,7 +143,6 @@
             <!-- COLUNA ESQUERDA: RESERVAS -->
             <div class="booking-side">
                 <div class="rooms-list" id="rooms-container">
-                    <!-- As salas serão carregadas aqui dinamicamente -->
                     <div class="loading">Carregando salas disponíveis...</div>
                 </div>
 
@@ -171,13 +170,11 @@
                             <div class="form-group">
                                 <label for="start-time">Hora Início</label>
                                 <select id="start-time" required>
-                                    <!-- Preenchido por JS -->
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="end-time">Hora Fim</label>
                                 <select id="end-time" required>
-                                    <!-- Preenchido por JS -->
                                 </select>
                             </div>
                         </div>
@@ -190,15 +187,59 @@
             <!-- COLUNA DIREITA: AGENDA -->
             <div class="agenda-side">
                 <section class="schedule-view">
-                    <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Agenda Gerencial</h2>
-                    <div id="schedule-timeline" class="timeline">
-                        <!-- Cronograma de reservas -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h2 style="font-size: 1.5rem; margin: 0;">Agenda Gerencial</h2>
+                        <div class="view-controls">
+                            <button id="view-list" class="btn-toggle active" onclick="switchView('list')">Lista</button>
+                            <button id="view-calendar" class="btn-toggle"
+                                onclick="switchView('calendar')">Calendário</button>
+                        </div>
+                    </div>
+
+                    <div id="list-container">
+                        <div id="schedule-timeline" class="timeline">
+                        </div>
+                    </div>
+
+                    <div id="calendar-container" style="display: none;">
+                        <div class="calendar-header">
+                            <button onclick="prevMonth()" class="btn-icon">&lt;</button>
+                            <h3 id="calendar-month-year">Janeiro 2026</h3>
+                            <button onclick="nextMonth()" class="btn-icon">&gt;</button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="day-name">Dom</div>
+                            <div class="day-name">Seg</div>
+                            <div class="day-name">Ter</div>
+                            <div class="day-name">Qua</div>
+                            <div class="day-name">Qui</div>
+                            <div class="day-name">Sex</div>
+                            <div class="day-name">Sáb</div>
+                        </div>
+                        <div id="calendar-days" class="calendar-grid">
+                        </div>
                     </div>
                 </section>
             </div>
         </div>
-
     </main>
+
+    <!-- MODAL DETALHES DO DIA (CALENDÁRIO) -->
+    <div id="calendar-day-details" class="modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1002; align-items: center; justify-content: center;">
+        <div class="glass-container"
+            style="max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 1.5rem;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.8rem;">
+                <h2 id="selected-day-label" style="font-size: 1.3rem; margin: 0; color: var(--primary-accent);">Reservas
+                    do Dia</h2>
+                <button onclick="closeDayDetails()" class="btn-close" style="font-size: 1.8rem;">&times;</button>
+            </div>
+            <div id="day-bookings-list" class="timeline" style="height: auto; max-height: 400px; padding-right: 5px;">
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

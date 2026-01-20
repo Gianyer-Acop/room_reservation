@@ -306,6 +306,172 @@ select:focus {
     padding-right: 12px;
 }
 
+/* VIEW TOGGLES */
+.view-controls {
+    display: flex;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 4px;
+    border-radius: 10px;
+    gap: 2px;
+}
+
+.btn-toggle {
+    padding: 6px 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-toggle.active {
+    background: white;
+    color: var(--primary-accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* CALENDAR STYLES */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+}
+
+.calendar-header h3 {
+    font-size: 1.1rem;
+    color: var(--primary-accent);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    text-align: center;
+}
+
+.day-name {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--text-secondary);
+    padding: 5px 0;
+    text-transform: uppercase;
+}
+
+.calendar-day {
+    aspect-ratio: 1/1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.calendar-day:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    border-color: var(--primary-accent);
+}
+
+.calendar-day.today {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: var(--primary-accent);
+    font-weight: bold;
+    color: var(--primary-accent);
+}
+
+.calendar-day.other-month {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.has-bookings::after {
+    content: '';
+    position: absolute;
+    bottom: 6px;
+    width: 6px;
+    height: 6px;
+    background: var(--primary-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--primary-accent);
+}
+
+.past-meeting {
+    opacity: 0.8;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.badge {
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-left: 8px;
+    text-transform: uppercase;
+}
+
+.badge-success {
+    background: rgba(34, 197, 94, 0.2);
+    color: #15803d;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.badge-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.btn-status {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-attended {
+    background: #22c55e;
+    color: white;
+    border: none;
+}
+
+.btn-missed {
+    background: #ef4444;
+    color: white;
+    border: none;
+}
+
+.btn-status:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Scrollbar personalizada discreta */
 ::-webkit-scrollbar {
     width: 6px;

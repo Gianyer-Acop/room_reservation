@@ -43,6 +43,7 @@ function initDb() {
             title TEXT NOT NULL,
             startTime TEXT NOT NULL,
             endTime TEXT NOT NULL,
+            usageStatus TEXT DEFAULT 'pending',
             FOREIGN KEY(roomId) REFERENCES rooms(id)
         )`);
 

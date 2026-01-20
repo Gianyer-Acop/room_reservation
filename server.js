@@ -190,10 +190,14 @@ app.delete('/api/rooms/:id', (req, res) => {
     });
 });
 
-// Obtener reservas (ahora incluye userId para saber quien la creo)
+// Obtener reservas (ahora incluye nombre de sala)
 app.get('/api/bookings', (req, res) => {
-    // Acepta query params ?date=YYYY-MM-DD para filtrar (opcional)
-    const sql = "SELECT * FROM bookings ORDER BY startTime ASC";
+    const sql = `
+        SELECT b.*, r.name as roomName 
+        FROM bookings b 
+        JOIN rooms r ON b.roomId = r.id 
+        ORDER BY b.startTime ASC
+    `;
     db.all(sql, [], (err, rows) => {
         if (err) res.status(500).json({ error: err.message });
         else res.json({ data: rows });
@@ -262,6 +266,17 @@ app.delete('/api/bookings/:id', (req, res) => {
                 res.status(403).json({ error: "Você não tem permissão para excluir esta reserva" });
             }
         });
+    });
+});
+
+// Atualizar status de uso da reserva
+app.patch('/api/bookings/:id/status', (req, res) => {
+    const { id } = req.params;
+    const { usageStatus } = req.body;
+    const sql = 'UPDATE bookings SET usageStatus = ? WHERE id = ?';
+    db.run(sql, [usageStatus, id], function (err) {
+        if (err) res.status(500).json({ error: err.message });
+        else res.json({ message: 'Status atualizado', changes: this.changes });
     });
 });
 

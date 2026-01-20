@@ -418,61 +418,169 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    // Estado do Calendário e Visualização
+    let currentView = 'list';
+    let calendarDate = new Date();
+    let allBookings = [];
+
+    window.switchView = function (view) {
+        currentView = view;
+        document.getElementById('view-list').classList.toggle('active', view === 'list');
+        document.getElementById('view-calendar').classList.toggle('active', view === 'calendar');
+        document.getElementById('list-container').style.display = view === 'list' ? 'block' : 'none';
+        document.getElementById('calendar-container').style.display = view === 'calendar' ? 'block' : 'none';
+        if (view === 'calendar') renderCalendar();
+    };
+
+    window.renderCalendar = function () {
+        const monthYear = document.getElementById('calendar-month-year');
+        const daysContainer = document.getElementById('calendar-days');
+        const year = calendarDate.getFullYear();
+        const month = calendarDate.getMonth();
+        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        monthYear.textContent = `${monthNames[month]} ${year}`;
+        daysContainer.innerHTML = '';
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const today = new Date();
+        for (let i = 0; i < firstDay; i++) {
+            const empty = document.createElement('div');
+            empty.className = 'calendar-day other-month';
+            daysContainer.appendChild(empty);
+        }
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dayBookings = allBookings.filter(b => b.startTime.startsWith(dateStr));
+            const dayEl = document.createElement('div');
+            dayEl.className = 'calendar-day';
+            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) dayEl.classList.add('today');
+            if (dayBookings.length > 0) dayEl.classList.add('has-bookings');
+            dayEl.innerHTML = `<span>${day}</span>`;
+            dayEl.onclick = () => showDayDetails(day, month, year, dayBookings);
+            daysContainer.appendChild(dayEl);
+        }
+    };
+
+    window.prevMonth = () => { calendarDate.setMonth(calendarDate.getMonth() - 1); renderCalendar(); };
+    window.nextMonth = () => { calendarDate.setMonth(calendarDate.getMonth() + 1); renderCalendar(); };
+    window.closeDayDetails = () => { document.getElementById('calendar-day-details').style.display = 'none'; };
+
+    window.showDayDetails = function (day, month, year, bookings) {
+        const popup = document.getElementById('calendar-day-details');
+        const list = document.getElementById('day-bookings-list');
+        document.getElementById('selected-day-label').textContent = `Reservas - ${day}/${month + 1}/${year}`;
+        list.innerHTML = bookings.length === 0 ? '<p style="text-align:center; padding:1rem; opacity:0.6;">Sem reservas.</p>' : '';
+        bookings.forEach(b => {
+            const start = new Date(b.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const end = new Date(b.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const endDateTime = new Date(b.endTime);
+            const now = new Date();
+            const isPast = endDateTime < now;
+            const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.id === b.userId);
+
+            const item = document.createElement('div');
+            item.className = 'booking-item';
+            if (isPast) item.classList.add('past-meeting');
+            item.innerHTML = `
+                <div class="booking-info">
+                    <div class="time">${start} - ${end}</div>
+                    <div style="margin-bottom: 2px;">
+                        <strong>${b.title}</strong>
+                        ${b.usageStatus !== 'pending' ? `<span class="badge ${b.usageStatus === 'attended' ? 'badge-success' : 'badge-danger'}">${b.usageStatus === 'attended' ? 'Realizado' : 'Não Realizado'}</span>` : ''}
+                    </div>
+                    <div style="font-size: 0.85em; opacity: 0.8; color: var(--text-secondary);">
+                        📍 ${b.roomName || 'Sala'} | 👤 ${b.userName || 'Usuário'}
+                    </div>
+                    ${isPast && b.usageStatus === 'pending' ? `
+                    <div class="usage-controls" style="margin-top: 8px; display: flex; gap: 5px;">
+                        <button class="btn-status btn-attended" onclick="updateBookingStatus(${b.id}, 'attended')" title="Marcar como Realizado">✓ Sim</button>
+                        <button class="btn-status btn-missed" onclick="updateBookingStatus(${b.id}, 'missed')" title="Marcar como Não Realizado">✗ Não</button>
+                    </div>` : ''}
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    ${canDelete ? `
+                    <button class="btn-delete" onclick="deleteBooking(${b.id})" title="Excluir">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                    </button>` : ''}
+                </div>
+            `;
+            list.appendChild(item);
+        });
+        popup.style.display = 'flex';
+    };
+
     function loadBookings() {
         fetch('/api/bookings')
             .then(res => res.json())
             .then(data => {
+                allBookings = data.data || [];
                 scheduleTimeline.innerHTML = '';
-                if (data.data.length === 0) {
+                if (allBookings.length === 0) {
                     scheduleTimeline.innerHTML = '<p style="text-align:center; color: #94a3b8;">Não há reservas.</p>';
-                    return;
-                }
+                } else {
 
-                // Agrupar por data
-                const groups = {};
-                data.data.forEach(booking => {
-                    const dateKey = booking.startTime.split('T')[0];
-                    if (!groups[dateKey]) groups[dateKey] = [];
-                    groups[dateKey].push(booking);
-                });
+                    // Agrupar por data
+                    const groups = {};
+                    data.data.forEach(booking => {
+                        const dateKey = booking.startTime.split('T')[0];
+                        if (!groups[dateKey]) groups[dateKey] = [];
+                        groups[dateKey].push(booking);
+                    });
 
-                // Ordenar datas
-                const sortedDates = Object.keys(groups).sort();
+                    // Ordenar datas
+                    const sortedDates = Object.keys(groups).sort();
 
-                sortedDates.forEach(dateStr => {
-                    // Adicionar cabeçalho de data
-                    const dateObj = new Date(dateStr + 'T12:00:00'); // Evitar problemas de timezone
-                    const formattedDate = dateObj.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+                    sortedDates.forEach(dateStr => {
+                        // Adicionar cabeçalho de data
+                        const dateObj = new Date(dateStr + 'T12:00:00'); // Evitar problemas de timezone
+                        const formattedDate = dateObj.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
-                    const header = document.createElement('div');
-                    header.className = 'date-group-header';
-                    header.textContent = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
-                    scheduleTimeline.appendChild(header);
+                        const header = document.createElement('div');
+                        header.className = 'date-group-header';
+                        header.textContent = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+                        scheduleTimeline.appendChild(header);
 
-                    // Adicionar reservas do dia
-                    groups[dateStr].forEach(booking => {
-                        const start = new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const end = new Date(booking.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                        const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.id === booking.userId);
+                        // Adicionar reservas do dia
+                        groups[dateStr].forEach(booking => {
+                            const start = new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            const end = new Date(booking.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                            const endDateTime = new Date(booking.endTime);
+                            const now = new Date();
+                            const isPast = endDateTime < now;
+                            const canDelete = currentUser && (currentUser.role === 'admin' || currentUser.id === booking.userId);
 
-                        const item = document.createElement('div');
-                        item.className = 'booking-item';
-                        item.innerHTML = `
+                            const item = document.createElement('div');
+                            item.className = 'booking-item';
+                            if (isPast) item.classList.add('past-meeting');
+
+                            item.innerHTML = `
                             <div class="booking-info">
                                 <div class="time">${start} - ${end}</div>
-                                <div style="margin-bottom: 2px;"><strong>${booking.title}</strong></div>
-                                <div style="font-size: 0.85em; opacity: 0.8; color: var(--text-secondary);">
-                                    📍 ${booking.roomName || 'Sala'} | 👤 ${booking.userName || 'Usuário'} (${booking.userSector || 'Geral'})
+                                <div style="margin-bottom: 2px;">
+                                    <strong>${booking.title}</strong>
+                                    ${booking.usageStatus !== 'pending' ? `<span class="badge ${booking.usageStatus === 'attended' ? 'badge-success' : 'badge-danger'}">${booking.usageStatus === 'attended' ? 'Realizado' : 'Não Realizado'}</span>` : ''}
                                 </div>
+                                <div style="font-size: 0.85em; opacity: 0.8; color: var(--text-secondary);">
+                                    📍 ${booking.roomName || 'Sala'} | 👤 ${booking.userName || 'Usuário'}
+                                </div>
+                                ${isPast && booking.usageStatus === 'pending' ? `
+                                <div class="usage-controls" style="margin-top: 8px; display: flex; gap: 5px;">
+                                    <button class="btn-status btn-attended" onclick="updateBookingStatus(${booking.id}, 'attended')" title="Marcar como Realizado">✓ Sim</button>
+                                    <button class="btn-status btn-missed" onclick="updateBookingStatus(${booking.id}, 'missed')" title="Marcar como Não Realizado">✗ Não</button>
+                                </div>` : ''}
                             </div>
-                            ${canDelete ? `
-                            <button class="btn-delete" onclick="deleteBooking(${booking.id})" title="Excluir">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
-                            </button>` : ''}
+                            <div style="display: flex; flex-direction: column; gap: 5px;">
+                                ${canDelete ? `
+                                <button class="btn-delete" onclick="deleteBooking(${booking.id})" title="Excluir">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                                </button>` : ''}
+                            </div>
                         `;
-                        scheduleTimeline.appendChild(item);
+                            scheduleTimeline.appendChild(item);
+                        });
                     });
-                });
+                }
+                if (typeof currentView !== 'undefined' && currentView === 'calendar') renderCalendar();
             });
     }
 
@@ -492,12 +600,34 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => alert('Erro ao excluir'));
     };
 
+    window.updateBookingStatus = function (id, status) {
+        fetch(`/api/bookings/${id}/status`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usageStatus: status })
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.error) alert(data.error);
+                else loadBookings();
+            })
+            .catch(err => alert('Erro ao atualizar status'));
+    };
+
     bookingForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const dateVal = dateInput.value;
         const startVal = startTimeSelect.value;
         const endVal = endTimeSelect.value;
         if (!dateVal || !startVal || !endVal) { alert('Preencha o horário.'); return; }
+
+        const startDateTime = new Date(`${dateVal}T${startVal}`);
+        const now = new Date();
+
+        if (startDateTime < now) {
+            alert('Não é possível realizar agendamentos para datas ou horários que já passaram.');
+            return;
+        }
 
         const formData = {
             roomId: roomSelect.value,
