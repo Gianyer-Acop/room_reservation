@@ -61,83 +61,6 @@
             </div>
         </header>
 
-        <!-- MODAL ADMIN -->
-        <div id="admin-modal" class="modal" style="display: none; z-index: 1001;">
-            <div class="glass-container" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                    <h2>Painel de Administração</h2>
-                    <button onclick="closeAdmin()" class="btn-close">&times;</button>
-                </div>
-
-                <div class="admin-grid">
-                    <!-- COLUNA USUÁRIOS -->
-                    <div class="admin-section">
-                        <h3>👥 Usuários</h3>
-                        <div class="admin-form-card">
-                            <h4 style="margin-bottom: 1rem;">Registrar Usuário</h4>
-                            <input type="text" id="new-user-name" class="admin-form-input"
-                                placeholder="Nome de Usuário">
-                            <input type="email" id="new-user-email" class="admin-form-input" placeholder="E-mail">
-                            <input type="password" id="new-user-pass" class="admin-form-input" placeholder="Senha">
-                            <input type="text" id="new-user-sector" class="admin-form-input"
-                                placeholder="Setor / Departamento">
-                            <button onclick="adminCreateUser()" class="btn-primary"
-                                style="width: 100%; margin-top: 0.5rem;">Criar Usuário</button>
-                        </div>
-                        <div id="users-list" class="admin-list-container"></div>
-                    </div>
-
-                    <!-- COLUNA SALAS -->
-                    <div class="admin-section">
-                        <h3>🏢 Salas</h3>
-                        <div class="admin-form-card">
-                            <h4 style="margin-bottom: 1rem; display: flex; justify-content: space-between;">
-                                <span id="room-form-title">Adicionar Sala</span>
-                                <button onclick="resetRoomForm()" id="btn-cancel-edit"
-                                    style="display:none; font-size: 0.7rem; background:none; border: 1px solid white; color: white; padding: 2px 5px; border-radius: 4px; cursor: pointer;">Cancelar</button>
-                            </h4>
-                            <input type="hidden" id="edit-room-id">
-                            <input type="text" id="new-room-name" class="admin-form-input"
-                                placeholder="Nome (Ex: Sala A)">
-                            <input type="number" id="new-room-cap" class="admin-form-input"
-                                placeholder="Capacidade (Pessoas)">
-                            <input type="text" id="new-room-feat" class="admin-form-input"
-                                placeholder="Características (Ex: TV, WiFi)">
-                            <button onclick="handleRoomSubmit()" id="btn-room-submit" class="btn-primary"
-                                style="width: 100%; margin-top: 0.5rem;">Adicionar Sala</button>
-                        </div>
-                        <div id="rooms-list-admin" class="admin-list-container"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- MODAL PERFIL -->
-        <div id="profile-modal" class="modal" style="display: none; z-index: 1000;">
-            <div class="glass-container" style="max-width: 400px; width: 90%;">
-                <h2 style="margin-bottom: 1.5rem;">Editar Perfil</h2>
-                <form id="profile-form">
-                    <div class="form-group">
-                        <label>Alterar Usuário (Opcional)</label>
-                        <input type="text" id="prof-username" placeholder="Novo nome de usuário">
-                    </div>
-                    <div class="form-group">
-                        <label>Alterar Senha (Opcional)</label>
-                        <input type="password" id="prof-new-pass" placeholder="Nova senha">
-                    </div>
-                    <hr style="border-color: rgba(0,0,0,0.05); margin: 1.5rem 0;">
-                    <div class="form-group">
-                        <label style="color: var(--secondary-accent)">Senha Atual (Requerido)</label>
-                        <input type="password" id="prof-old-pass" placeholder="Confirme sua senha atual" required>
-                    </div>
-                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                        <button type="button" onclick="closeProfile()" class="btn-cancel">Cancelar</button>
-                        <button type="submit" class="btn-primary" style="flex: 1;">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
         <div class="dashboard">
             <!-- COLUNA ESQUERDA: RESERVAS -->
             <div class="booking-side">
@@ -224,16 +147,99 @@
         </div>
     </main>
 
-    <div id="calendar-day-details" class="modal" style="display: none; z-index: 1002;">
-        <div class="glass-container"
-            style="max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 1.5rem;">
-            <div
-                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.2rem; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 0.8rem;">
-                <h2 id="selected-day-label" style="font-size: 1.3rem; margin: 0; color: var(--primary-accent);">Reservas
-                    do Dia</h2>
-                <button onclick="closeDayDetails()" class="btn-close" style="font-size: 1.8rem;">&times;</button>
+    <!-- MODAL ADMIN -->
+    <div id="admin-modal" class="modal">
+        <div class="glass-container" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h2 class="modal-title">Painel de Administração</h2>
+                <button onclick="closeAdmin()" class="btn-close">&times;</button>
             </div>
-            <div id="day-bookings-list" class="timeline" style="height: auto; max-height: 400px; padding-right: 5px;">
+            <div class="modal-content">
+                <div class="admin-grid">
+                    <!-- COLUNA USUÁRIOS -->
+                    <div class="admin-section">
+                        <h3>👥 Usuários</h3>
+                        <div class="admin-form-card">
+                            <h4 style="margin-bottom: 1rem;">Registrar Usuário</h4>
+                            <input type="text" id="new-user-name" class="admin-form-input"
+                                placeholder="Nome de Usuário">
+                            <input type="email" id="new-user-email" class="admin-form-input" placeholder="E-mail">
+                            <input type="password" id="new-user-pass" class="admin-form-input" placeholder="Senha">
+                            <input type="text" id="new-user-sector" class="admin-form-input"
+                                placeholder="Setor / Departamento">
+                            <button onclick="adminCreateUser()" class="btn-primary"
+                                style="width: 100%; margin-top: 0.5rem;">Criar Usuário</button>
+                        </div>
+                        <div id="users-list" class="admin-list-container"></div>
+                    </div>
+
+                    <!-- COLUNA SALAS -->
+                    <div class="admin-section">
+                        <h3>🏢 Salas</h3>
+                        <div class="admin-form-card">
+                            <h4 style="margin-bottom: 1rem; display: flex; justify-content: space-between;">
+                                <span id="room-form-title">Adicionar Sala</span>
+                                <button onclick="resetRoomForm()" id="btn-cancel-edit"
+                                    style="display:none; font-size: 0.7rem; background:none; border: 1px solid white; color: white; padding: 2px 5px; border-radius: 4px; cursor: pointer;">Cancelar</button>
+                            </h4>
+                            <input type="hidden" id="edit-room-id">
+                            <input type="text" id="new-room-name" class="admin-form-input"
+                                placeholder="Nome (Ex: Sala A)">
+                            <input type="number" id="new-room-cap" class="admin-form-input"
+                                placeholder="Capacidade (Pessoas)">
+                            <input type="text" id="new-room-feat" class="admin-form-input"
+                                placeholder="Características (Ex: TV, WiFi)">
+                            <button onclick="handleRoomSubmit()" id="btn-room-submit" class="btn-primary"
+                                style="width: 100%; margin-top: 0.5rem;">Adicionar Sala</button>
+                        </div>
+                        <div id="rooms-list-admin" class="admin-list-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PERFIL -->
+    <div id="profile-modal" class="modal">
+        <div class="glass-container" style="max-width: 400px; width: 90%;">
+            <div class="modal-header">
+                <h2 class="modal-title">Editar Perfil</h2>
+                <button onclick="closeProfile()" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-content">
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label>Alterar Usuário (Opcional)</label>
+                        <input type="text" id="prof-username" placeholder="Novo nome de usuário">
+                    </div>
+                    <div class="form-group">
+                        <label>Alterar Senha (Opcional)</label>
+                        <input type="password" id="prof-new-pass" placeholder="Nova senha">
+                    </div>
+                    <hr style="border-color: rgba(0,0,0,0.05); margin: 1.5rem 0;">
+                    <div class="form-group">
+                        <label style="color: var(--secondary-accent)">Senha Atual (Requerido)</label>
+                        <input type="password" id="prof-old-pass" placeholder="Confirme sua senha atual" required>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="button" onclick="closeProfile()" class="btn-cancel">Cancelar</button>
+                        <button type="submit" class="btn-primary" style="flex: 1;">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="calendar-day-details" class="modal">
+        <div class="glass-container" style="max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <div class="modal-header">
+                <h2 id="selected-day-label" class="modal-title">Reservas do Dia</h2>
+                <button onclick="closeDayDetails()" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div id="day-bookings-list" class="timeline"
+                    style="height: auto; max-height: 400px; padding-right: 5px;">
+                </div>
             </div>
         </div>
     </div>

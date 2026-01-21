@@ -76,15 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('prof-username').value = currentUser.username;
         document.getElementById('prof-new-pass').value = '';
         document.getElementById('prof-old-pass').value = '';
-        profileModal.style.display = 'flex';
+        profileModal.classList.add('show');
+        document.body.classList.add('modal-open');
     };
 
     window.closeProfile = function () {
         profileModal.classList.add('closing');
+        document.body.classList.remove('modal-open');
         setTimeout(() => {
-            profileModal.style.display = 'none';
-            profileModal.classList.remove('closing');
-        }, 250);
+            profileModal.classList.remove('show', 'closing');
+        }, 300);
     };
 
     document.getElementById('profile-form').addEventListener('submit', async (e) => {
@@ -129,17 +130,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.openAdmin = function () {
-        adminModal.style.display = 'flex';
+        adminModal.classList.add('show');
+        document.body.classList.add('modal-open');
         loadAllUsers();
         loadAllRoomsAdmin();
     };
 
     window.closeAdmin = function () {
         adminModal.classList.add('closing');
+        document.body.classList.remove('modal-open');
         setTimeout(() => {
-            adminModal.style.display = 'none';
-            adminModal.classList.remove('closing');
-        }, 250);
+            adminModal.classList.remove('show', 'closing');
+        }, 300);
     };
 
     // -- ADMIN: USUARIOS --
@@ -493,10 +495,10 @@ document.addEventListener('DOMContentLoaded', () => {
     window.closeDayDetails = () => {
         const modal = document.getElementById('calendar-day-details');
         modal.classList.add('closing');
+        document.body.classList.remove('modal-open');
         setTimeout(() => {
-            modal.style.display = 'none';
-            modal.classList.remove('closing');
-        }, 250);
+            modal.classList.remove('show', 'closing');
+        }, 300);
     };
 
     window.showDayDetails = function (day, month, year, bookings) {
@@ -540,7 +542,8 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             list.appendChild(item);
         });
-        popup.style.display = 'flex';
+        popup.classList.add('show');
+        document.body.classList.add('modal-open');
     };
 
     function loadBookings() {
