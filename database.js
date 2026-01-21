@@ -47,6 +47,19 @@ function initDb() {
             FOREIGN KEY(roomId) REFERENCES rooms(id)
         )`);
 
+        // Migração: Adicionar usageStatus se não existir
+        db.run("ALTER TABLE bookings ADD COLUMN usageStatus TEXT DEFAULT 'pending'", (err) => {
+            if (err) {
+                if (err.message.includes("duplicate column name")) {
+                    console.log("Coluna usageStatus já existe.");
+                } else {
+                    console.error("Erro ao adicionar coluna usageStatus:", err.message);
+                }
+            } else {
+                console.log("Coluna usageStatus adicionada com sucesso.");
+            }
+        });
+
         // Insertar datos de prueba si no hay salas
         db.get("SELECT count(*) as count FROM rooms", (err, row) => {
             if (row.count === 0) {

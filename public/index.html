@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -61,8 +62,7 @@
         </header>
 
         <!-- MODAL ADMIN -->
-        <div id="admin-modal" class="modal"
-            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.45); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); z-index: 1001; align-items: center; justify-content: center;">
+        <div id="admin-modal" class="modal" style="display: none; z-index: 1001;">
             <div class="glass-container" style="max-width: 800px; width: 95%; max-height: 90vh; overflow-y: auto;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h2>Painel de Administração</h2>
@@ -113,8 +113,7 @@
         </div>
 
         <!-- MODAL PERFIL -->
-        <div id="profile-modal" class="modal"
-            style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.45); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); z-index: 1000; align-items: center; justify-content: center;">
+        <div id="profile-modal" class="modal" style="display: none; z-index: 1000;">
             <div class="glass-container" style="max-width: 400px; width: 90%;">
                 <h2 style="margin-bottom: 1.5rem;">Editar Perfil</h2>
                 <form id="profile-form">
@@ -197,12 +196,12 @@
                         </div>
                     </div>
 
-                    <div id="list-container">
+                    <div id="list-container" class="view-content view-visible">
                         <div id="schedule-timeline" class="timeline">
                         </div>
                     </div>
 
-                    <div id="calendar-container" style="display: none;">
+                    <div id="calendar-container" class="view-content view-hidden">
                         <div class="calendar-header">
                             <button onclick="prevMonth()" class="btn-icon">&lt;</button>
                             <h3 id="calendar-month-year">Janeiro 2026</h3>
@@ -225,9 +224,7 @@
         </div>
     </main>
 
-    <!-- MODAL DETALHES DO DIA (CALENDÁRIO) -->
-    <div id="calendar-day-details" class="modal"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.2); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1002; align-items: center; justify-content: center;">
+    <div id="calendar-day-details" class="modal" style="display: none; z-index: 1002;">
         <div class="glass-container"
             style="max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 1.5rem;">
             <div

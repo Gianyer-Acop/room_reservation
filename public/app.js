@@ -80,7 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.closeProfile = function () {
-        profileModal.style.display = 'none';
+        profileModal.classList.add('closing');
+        setTimeout(() => {
+            profileModal.style.display = 'none';
+            profileModal.classList.remove('closing');
+        }, 250);
     };
 
     document.getElementById('profile-form').addEventListener('submit', async (e) => {
@@ -131,7 +135,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.closeAdmin = function () {
-        adminModal.style.display = 'none';
+        adminModal.classList.add('closing');
+        setTimeout(() => {
+            adminModal.style.display = 'none';
+            adminModal.classList.remove('closing');
+        }, 250);
     };
 
     // -- ADMIN: USUARIOS --
@@ -425,11 +433,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.switchView = function (view) {
         currentView = view;
-        document.getElementById('view-list').classList.toggle('active', view === 'list');
-        document.getElementById('view-calendar').classList.toggle('active', view === 'calendar');
-        document.getElementById('list-container').style.display = view === 'list' ? 'block' : 'none';
-        document.getElementById('calendar-container').style.display = view === 'calendar' ? 'block' : 'none';
-        if (view === 'calendar') renderCalendar();
+        const listBtn = document.getElementById('view-list');
+        const calBtn = document.getElementById('view-calendar');
+        const listCont = document.getElementById('list-container');
+        const calCont = document.getElementById('calendar-container');
+
+        listBtn.classList.toggle('active', view === 'list');
+        calBtn.classList.toggle('active', view === 'calendar');
+
+        if (view === 'list') {
+            calCont.classList.add('view-hidden');
+            calCont.classList.remove('view-visible');
+            setTimeout(() => {
+                listCont.classList.add('view-visible');
+                listCont.classList.remove('view-hidden');
+            }, 50);
+        } else {
+            listCont.classList.add('view-hidden');
+            listCont.classList.remove('view-visible');
+            setTimeout(() => {
+                calCont.classList.add('view-visible');
+                calCont.classList.remove('view-hidden');
+                renderCalendar();
+            }, 50);
+        }
     };
 
     window.renderCalendar = function () {
@@ -463,7 +490,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.prevMonth = () => { calendarDate.setMonth(calendarDate.getMonth() - 1); renderCalendar(); };
     window.nextMonth = () => { calendarDate.setMonth(calendarDate.getMonth() + 1); renderCalendar(); };
-    window.closeDayDetails = () => { document.getElementById('calendar-day-details').style.display = 'none'; };
+    window.closeDayDetails = () => {
+        const modal = document.getElementById('calendar-day-details');
+        modal.classList.add('closing');
+        setTimeout(() => {
+            modal.style.display = 'none';
+            modal.classList.remove('closing');
+        }, 250);
+    };
 
     window.showDayDetails = function (day, month, year, bookings) {
         const popup = document.getElementById('calendar-day-details');
