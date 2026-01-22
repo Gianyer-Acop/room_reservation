@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAdminUsers = document.getElementById('btn-admin-users');
 
     // --- MANEJO DE VISTAS ---
+
     function updateView() {
         if (currentUser) {
             loginScreen.style.display = 'none';
@@ -444,20 +445,12 @@ document.addEventListener('DOMContentLoaded', () => {
         calBtn.classList.toggle('active', view === 'calendar');
 
         if (view === 'list') {
-            calCont.classList.add('view-hidden');
-            calCont.classList.remove('view-visible');
-            setTimeout(() => {
-                listCont.classList.add('view-visible');
-                listCont.classList.remove('view-hidden');
-            }, 50);
+            listCont.classList.replace('view-hidden', 'view-visible');
+            calCont.classList.replace('view-visible', 'view-hidden');
         } else {
-            listCont.classList.add('view-hidden');
-            listCont.classList.remove('view-visible');
-            setTimeout(() => {
-                calCont.classList.add('view-visible');
-                calCont.classList.remove('view-hidden');
-                renderCalendar();
-            }, 50);
+            calCont.classList.replace('view-hidden', 'view-visible');
+            listCont.classList.replace('view-visible', 'view-hidden');
+            renderCalendar();
         }
     };
 
