@@ -159,39 +159,59 @@
                     <!-- COLUNA USUÁRIOS -->
                     <div class="admin-section">
                         <h3>👥 Usuários</h3>
-                        <div class="admin-form-card">
-                            <h4 style="margin-bottom: 1rem;">Registrar Usuário</h4>
-                            <input type="text" id="new-user-name" class="admin-form-input"
-                                placeholder="Nome de Usuário">
-                            <input type="email" id="new-user-email" class="admin-form-input" placeholder="E-mail">
-                            <input type="password" id="new-user-pass" class="admin-form-input" placeholder="Senha">
-                            <input type="text" id="new-user-sector" class="admin-form-input"
-                                placeholder="Setor / Departamento">
-                            <button onclick="adminCreateUser()" class="btn-primary"
-                                style="width: 100%; margin-top: 0.5rem;">Criar Usuário</button>
-                        </div>
+                        <form autocomplete="off" onsubmit="return false">
+                            <!-- DUMMY FIELDS TO TRICK BROWSER AUTOFILL -->
+                            <input type="text" name="fake-user" style="display:none" aria-hidden="true">
+                            <input type="password" name="fake-pass" style="display:none" aria-hidden="true">
+
+                            <div class="admin-form-card">
+                                <h4 style="margin-bottom: 1rem;">Registrar Usuário</h4>
+                                <input type="text" id="new-user-name" name="adm_usr_1" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly')" class="admin-form-input"
+                                    placeholder="Nome de Usuário">
+                                <input type="email" id="new-user-email" name="adm_usr_2" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly')" class="admin-form-input"
+                                    placeholder="E-mail">
+                                <input type="password" id="new-user-pass" name="adm_usr_3" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly')" class="admin-form-input"
+                                    placeholder="Senha">
+                                <input type="text" id="new-user-sector" name="adm_usr_4" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly')" class="admin-form-input"
+                                    placeholder="Setor / Departamento">
+                                <button type="button" onclick="adminCreateUser()" class="btn-primary"
+                                    style="width: 100%; margin-top: 0.5rem;">Criar Usuário</button>
+                            </div>
+                        </form>
                         <div id="users-list" class="admin-list-container"></div>
                     </div>
 
                     <!-- COLUNA SALAS -->
                     <div class="admin-section">
                         <h3>🏢 Salas</h3>
-                        <div class="admin-form-card">
-                            <h4 style="margin-bottom: 1rem; display: flex; justify-content: space-between;">
-                                <span id="room-form-title">Adicionar Sala</span>
-                                <button onclick="resetRoomForm()" id="btn-cancel-edit"
-                                    style="display:none; font-size: 0.7rem; background:none; border: 1px solid white; color: white; padding: 2px 5px; border-radius: 4px; cursor: pointer;">Cancelar</button>
-                            </h4>
-                            <input type="hidden" id="edit-room-id">
-                            <input type="text" id="new-room-name" class="admin-form-input"
-                                placeholder="Nome (Ex: Sala A)">
-                            <input type="number" id="new-room-cap" class="admin-form-input"
-                                placeholder="Capacidade (Pessoas)">
-                            <input type="text" id="new-room-feat" class="admin-form-input"
-                                placeholder="Características (Ex: TV, WiFi)">
-                            <button onclick="handleRoomSubmit()" id="btn-room-submit" class="btn-primary"
-                                style="width: 100%; margin-top: 0.5rem;">Adicionar Sala</button>
-                        </div>
+                        <form autocomplete="off" onsubmit="return false">
+                            <!-- DUMMY FIELD TO TRICK BROWSER AUTOFILL -->
+                            <input type="text" name="fake-room" style="display:none" aria-hidden="true">
+
+                            <div class="admin-form-card">
+                                <h4 style="margin-bottom: 1rem; display: flex; justify-content: space-between;">
+                                    <span id="room-form-title">Adicionar Sala</span>
+                                    <button type="button" onclick="resetRoomForm()" id="btn-cancel-edit"
+                                        style="display:none; font-size: 0.7rem; background:none; border: 1px solid white; color: white; padding: 2px 5px; border-radius: 4px; cursor: pointer;">Cancelar</button>
+                                </h4>
+                                <input type="hidden" id="edit-room-id">
+                                <input type="text" id="new-room-name" name="adm_rm_1" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly')" class="admin-form-input"
+                                    placeholder="Nome (Ex: Sala A)">
+                                <input type="number" id="new-room-cap" name="adm_rm_2" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly')" class="admin-form-input"
+                                    placeholder="Capacidade (Pessoas)">
+                                <input type="text" id="new-room-feat" name="adm_rm_3" autocomplete="off" readonly
+                                    onfocus="this.removeAttribute('readonly')" class="admin-form-input"
+                                    placeholder="Características (Ex: TV, WiFi)">
+                                <button type="button" onclick="handleRoomSubmit()" id="btn-room-submit"
+                                    class="btn-primary" style="width: 100%; margin-top: 0.5rem;">Adicionar Sala</button>
+                            </div>
+                        </form>
                         <div id="rooms-list-admin" class="admin-list-container"></div>
                     </div>
                 </div>
